@@ -23,26 +23,28 @@ stop_words = stop_words_sp + stop_words_en + list(string.punctuation)
 lista_palabras = ['haha', 'hehe', 'hihi', 'jaja', 'jjaa', 'jajj', 'ajja', 'juju', 'jaaj' 'jiji', 'jojo', 'ahhh', 'weee', 'guee', 'jeje', 'ayy', 'siii', 'nooo', ' uhhh', 'http']
 
 import matplotlib.pyplot as plt
-plt.style.use('seaborn-muted')
+plt.style.use('whitegrid')
 import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as go
 
 ##App
-st.set_page_config(page_title='Análisis WhatsApp', layout='wide')
-st.title('Análisis Automático de Conversaciones de WhatsApp')
-st.write('Creado por Lautaro Pacella')
-with st.beta_expander("¿Cómo Funciona?", expanded = False):
+st.set_page_config(page_title='Whatsapp Analysis - Rodi Pardo', layout='wide')
+st.title('Analizador de conversaciones en WhatsApp')
+st.header('Analiza en cuestión de minutos las conversaciones')
+st.subheader('Todas los insights necesarios para poder entender cómo te hablan y cómo hablas')
+st.write('Creado por Rodolfo Pardo)
+with st.beta_expander("¿Qué es lo que tengo que hacer?", expanded = False):
     st.write("""
-    Para comenzar, necesitas tener el archivo de tu conversación que brinda WhatsApp.\n
-    Ingresá en la conversación que te gustaría analizar ->  "⁝"  -> "Más" -> "Exportar Chat"  -> "Sin archivos" -> esperar a que la aplicación produzca el archivo de la conversación.\n
-    Por último, subir el archivo ¡y listo! vas a tener los datos de tu chat.
+    Lo primero es entrar a la app de WhatsApp desde tu celular, luego elegí la persona a la cual querés analizar \n
+    Haces click en la línea de puntos :, luego en "más"y luego en exportar chat. \n
+    Siempre tenes que exportar el chat con la opción "sin multimedia
     """)
 
 upload_file = st.file_uploader("WhatsApp Chat", accept_multiple_files = False, type = 'txt')
-st.markdown('**El contenido de su conversación no será accesible para nadie ni será guardado.**')
+st.markdown('**Lo que subas no será usado ni guardado en ningún momento.**')
 if upload_file:
-    with st.spinner('Analizando Conversación'):
+    with st.spinner('Analizando la conversación que has subido'):
 
         ##Get text data
         name_patt = re.compile(r'\-\s([a-zA-Z0–9áéíóúÁÉÍÓÚ]+\s?[a-zA-Z0–9áéíóúÁÉÍÓÚ]+\s?[a-zA-Z0–9áéíóúÁÉÍÓÚ]+\s?)\:\s')
@@ -132,12 +134,12 @@ if upload_file:
 
         ### WORDCLOUD
         wc['Content'] = wc['Content'].apply(lambda x: prepare_text(x))
-        wordcloud = WordCloud(background_color="black",stopwords=stop_words,
+        wordcloud = WordCloud(background_color="white",stopwords=stop_words,
                               width = 1200, height = 500,
                              contour_color='black').generate(" ".join(wc['Content']))
         wc_plot = plt.figure(facecolor='black', figsize=(12,5), dpi = 500)
         plt.imshow(wordcloud, interpolation='bilinear')
-        plt.title('Nube de las 200 Palabras más Utilizadas')
+        plt.title('Lista de palabras más frecuentes utilizadas en la conversación')
         plt.axis("off")
         plt.tight_layout(pad=0)
 
@@ -152,7 +154,7 @@ if upload_file:
         colors[hours_count['Normalized'].argmax()] = 'crimson' 
         hours = go.Figure(data=[go.Bar(x = hours_count.Hours, y= hours_count.Normalized, marker_color = colors)])
 
-        hours.update_layout(title = 'Cantidad Promedio de Mensajes por Horas del Día', 
+        hours.update_layout(title = 'Mensajes por hora - Promedio', 
                             xaxis_tickangle=-45, 
                             xaxis_title='', 
                             yaxis_title='Mensajes')
@@ -168,7 +170,7 @@ if upload_file:
         week = {0: 'Lunes', 1:'Martes', 2:'Miércoles', 3: 'Jueves', 4:'Viernes', 5:'Sábado', 6:'Domingo'}
         days_count.replace({'Day': week}, inplace=True)
         days_week = go.Figure(data=[go.Bar(x = days_count.Day, y = days_count.Normalized, marker_color = colors)])
-        days_week.update_layout(title = 'Cantidad Promedio de Mensajes por Días de la Semana',
+        days_week.update_layout(title = 'Mensajes por día de semana - Promedio',
                                 xaxis_title='', 
                                 yaxis_title='Mensajes')
                 
@@ -292,13 +294,13 @@ if upload_file:
             st.plotly_chart(lenght_plot, use_container_width=True)
             random8,random9,random10 = st.beta_columns(3)
             with random9:
-                st.write('Nube de las 200 palabras más Utilizadas')
+                st.write('Palabras más frecuentes utilizadas')
             st.pyplot(wc_plot)
             
         with st.beta_expander('Emojis'):    
             col5, col6 = st.beta_columns(2)
             with col5:    
-                st.write('Los 15 Emojis más Usados en la Conversación \n')
+                st.write('Los emojis más utilizados en las conversaciones \n')
 
                 for key,value in emoji_dict[0:15]:
                     st.write(key ,'->' ,value)
