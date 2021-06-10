@@ -33,7 +33,7 @@ st.set_page_config(page_title='Whatsapp Analysis - Rodi Pardo', layout='wide')
 st.title('Analizador de conversaciones en WhatsApp')
 st.header('Analiza en cuestión de minutos las conversaciones')
 st.subheader('Todas los insights necesarios para poder entender cómo te hablan y cómo hablas')
-st.write('Creado por Rodolfo Pardo)
+st.write('Creado por Rodolfo Pardo')
 with st.beta_expander("¿Qué es lo que tengo que hacer?", expanded = False):
     st.write("""
     Lo primero es entrar a la app de WhatsApp desde tu celular, luego elegí la persona a la cual querés analizar \n
