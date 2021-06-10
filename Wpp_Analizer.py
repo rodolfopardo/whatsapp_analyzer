@@ -23,7 +23,7 @@ stop_words = stop_words_sp + stop_words_en + list(string.punctuation)
 lista_palabras = ['haha', 'hehe', 'hihi', 'jaja', 'jjaa', 'jajj', 'ajja', 'juju', 'jaaj' 'jiji', 'jojo', 'ahhh', 'weee', 'guee', 'jeje', 'ayy', 'siii', 'nooo', ' uhhh', 'http']
 
 import matplotlib.pyplot as plt
-plt.style.use('whitegrid')
+plt.style.use('ggplot')
 import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as go
